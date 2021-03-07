@@ -47,15 +47,54 @@ public class Controller {
         Button clickedButton = (Button) evt.getTarget();
         String buttonLabel = clickedButton.getText();
 
-        if ("".equals(buttonLabel) && isFirstPlayer) {
-            clickedButton.setText("X");
-            isFirstPlayer = false;
-        } else if ("".equals(buttonLabel) && !isFirstPlayer) {
-            clickedButton.setText("O");
-            isFirstPlayer = true;
+
+        if ("".equals(buttonLabel)) {
+            if (isFirstPlayer) {
+                clickedButton.setText("X");
+                isFirstPlayer = false;
+            } else {
+                clickedButton.setText("O");
+                isFirstPlayer = true;
+            }
+
+            isGameOver = find3InARow();  // is there a winner?
+            if (!isGameOver) {
+                goComputer();
+            }
+        }
+    }
+
+    private void goComputer() {
+        // put to center if center empty
+        if(getBoard()[4].getText().equals("")) {
+            if (isFirstPlayer) {
+                getBoard()[4].setText("X");
+                isFirstPlayer = false;
+            } else {
+                getBoard()[4].setText("O");
+                isFirstPlayer = true;
+            }
+
+            isGameOver = find3InARow();  // is there a winner?
+            return;
         }
 
-        isGameOver = find3InARow();  // is there a winner?
+
+        // put to any empty
+        for (int i = 0; i < 9; i++) {
+            if(getBoard()[i].getText().equals("")) {
+                if (isFirstPlayer) {
+                    getBoard()[i].setText("X");
+                    isFirstPlayer = false;
+                } else {
+                    getBoard()[i].setText("O");
+                    isFirstPlayer = true;
+                }
+
+                isGameOver = find3InARow();  // is there a winner?
+                return;
+            }
+        }
     }
 
     private boolean find3InARow() {
